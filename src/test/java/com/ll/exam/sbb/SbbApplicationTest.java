@@ -11,8 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
-class SbbApplicationTest {
-
+class SbbApplicationTests {
     @Autowired
     private QuestionRepository questionRepository;
 
@@ -40,13 +39,18 @@ class SbbApplicationTest {
 
     @Test
     void testJpa2() {
+        // SELECT * FROM question
         List<Question> all = questionRepository.findAll();
         assertEquals(2, all.size());
 
         Question q = all.get(0);
         assertEquals("sbb가 무엇인가요?", q.getSubject());
-
     }
 
-
+    @Test
+    void testJpa3() {
+        // SELECT * FROM question
+        Question q = questionRepository.findBySubject("sbb가 무엇인가요?");
+        assertEquals(1, q.getId());
+    }
 }
