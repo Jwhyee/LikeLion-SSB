@@ -6,6 +6,12 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.persistence.*;
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @Entity
@@ -20,6 +26,5 @@ public class Answer {
     private LocalDateTime createDate;
 
     @ManyToOne
-    @JoinColumn(foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
     private Question question;
 }
