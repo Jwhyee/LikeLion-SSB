@@ -1,5 +1,6 @@
 <html
         xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
         xmlns:th="http://thymeleaf.org"
         layout:decorate="~{layout}">
 
@@ -16,6 +17,7 @@
                 </div>
             </div>
         </div>
+        <a th:if="${question.getAuthor().getUsername() == #authentication.getPrincipal().getUsername()}" type="button" class="btn btn-light" th:href="@{/question/update/{id}(id=${question.id})}">수정</a>
     </div>
 
     <!-- 답변의 갯수 표시 -->
@@ -38,9 +40,10 @@
     <!-- 답변 작성 -->
     <form th:action="@{|/answer/create/${question.id}|}" th:object="${answerForm}" method="post" class="my-3">
         <div th:replace="form_errors :: formErrorsFragment"></div>
-
-        <textarea name="content" rows="10" class="form-control"></textarea>
-        <input type="submit" value="답변등록" class="btn btn-primary my-2">
+        <textarea sec:authorize="isAuthenticated()" name="content" rows="10" class="form-control"></textarea>
+        <textarea sec:authorize="isAnonymous()" disabled placeholder="로그인 후 이용가능합니다." name="content" rows="10" class="form-control"></textarea>
+        <input sec:authorize="isAuthenticated()" type="submit" value="답변등록" class="btn btn-primary my-2">
+        <input sec:authorize="isAnonymous()" disabled type="submit" value="답변등록" class="btn btn-primary my-2">
     </form>
 
 </div>

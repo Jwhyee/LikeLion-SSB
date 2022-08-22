@@ -1,5 +1,6 @@
 <html
         xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
         xmlns:th="http://thymeleaf.org"
         layout:decorate="~{layout}">
 
@@ -9,6 +10,7 @@
         <tr>
             <th>번호</th>
             <th>제목</th>
+            <th>글쓴이</th>
             <th>작성일시</th>
         </tr>
         </thead>
@@ -21,6 +23,7 @@
                       th:text="${#lists.size(question.answerList)}">
                 </span>
             </td>
+            <td th:text="${question.getAuthor().username}"></td>
             <td th:text="${#temporals.format(question.createDate, 'yy-MM-dd HH:mm')}"></td>
         </tr>
         </tbody>

@@ -7,7 +7,14 @@ import lombok.Setter;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
-@AllArgsConstructor
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+
+@Setter
 @Getter
 public class QuestionForm {
     @NotEmpty(message = "제목은 필수항목입니다.")
