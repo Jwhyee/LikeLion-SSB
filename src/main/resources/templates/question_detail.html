@@ -16,8 +16,17 @@
                     <div th:text="${#temporals.format(question.createDate, 'yyyy-MM-dd HH:mm')}"></div>
                 </div>
             </div>
+            <div class="my-3">
+                <a th:href="@{|/question/modify/${question.id}|}" class="btn btn-sm btn-outline-primary"
+                   sec:authorize="isAuthenticated()"
+                   th:if="${question.author != null and #authentication.getPrincipal().getUsername() == question.author.username}"
+                   th:text="수정"></a>
+                <a th:href="@{|/question/delete/${question.id}|}" class="btn btn-sm btn-outline-danger"
+                   sec:authorize="isAuthenticated()"
+                   th:if="${question.author != null and #authentication.getPrincipal().getUsername() == question.author.username}"
+                   th:text="삭제"></a>
+            </div>
         </div>
-        <a th:if="${question.getAuthor().getUsername() == #authentication.getPrincipal().getUsername()}" type="button" class="btn btn-light" th:href="@{/question/update/{id}(id=${question.id})}">수정</a>
     </div>
 
     <!-- 답변의 갯수 표시 -->
@@ -32,6 +41,16 @@
                 <div class="badge bg-light text-dark p-2 text-start">
                     <div th:text="${#temporals.format(answer.createDate, 'yyyy-MM-dd HH:mm')}"></div>
                 </div>
+            </div>
+            <div class="my-3">
+                <a th:href="@{|/answer/modify/${question.id}|}" class="btn btn-sm btn-outline-primary"
+                   sec:authorize="isAuthenticated()"
+                   th:if="${answer.author != null and #authentication.getPrincipal().getUsername() == answer.author.username}"
+                   th:text="수정"></a>
+                <a th:href="@{|/answer/delete/${question.id}|}" class="btn btn-sm btn-outline-danger"
+                   sec:authorize="isAuthenticated()"
+                   th:if="${answer.author != null and #authentication.getPrincipal().getUsername() == answer.author.username}"
+                   th:text="삭제"></a>
             </div>
         </div>
     </div>
