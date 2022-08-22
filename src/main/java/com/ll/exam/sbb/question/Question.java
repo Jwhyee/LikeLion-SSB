@@ -1,7 +1,9 @@
 package com.ll.exam.sbb.question;
 
 import com.ll.exam.sbb.answer.Answer;
-import lombok.*;
+import com.ll.exam.sbb.user.SiteUser;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -15,7 +17,7 @@ import java.util.List;
 public class Question {
     @Id // primary key
     @GeneratedValue(strategy = GenerationType.IDENTITY) // auto_increment
-    private Integer id;
+    private Long id;
     @Column(length = 200) // varchar(200)
     private String subject;
     @Column(columnDefinition = "TEXT")
@@ -24,6 +26,9 @@ public class Question {
 
     @OneToMany(mappedBy = "question", cascade = {CascadeType.ALL})
     private List<Answer> answerList = new ArrayList<>();
+
+    @ManyToOne
+    private SiteUser author;
 
     public void addAnswer(Answer answer) {
         answer.setQuestion(this);
