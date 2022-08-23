@@ -1,7 +1,5 @@
 package com.ll.exam.sbb.question;
 
-import com.ll.exam.sbb.DataNotFoundException;
-import com.ll.exam.sbb.answer.Answer;
 import com.ll.exam.sbb.answer.AnswerForm;
 import com.ll.exam.sbb.user.SiteUser;
 import com.ll.exam.sbb.user.UserService;

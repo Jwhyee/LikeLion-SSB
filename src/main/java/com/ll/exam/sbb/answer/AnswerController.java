@@ -41,10 +41,10 @@ public class AnswerController {
         SiteUser siteUser = userService.getUser(principal.getName());
 
         // 답변 등록 시작
-        answerService.create(question, answerForm.getContent(), siteUser);
+        Answer answer = answerService.create(question, answerForm.getContent(), siteUser);
         // 답변 등록 끝
 
-        return "redirect:/question/detail/%d".formatted(id);
+        return "redirect:/question/detail/%d#answer_%d".formatted(id, answer.getId());
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -95,9 +95,10 @@ public class AnswerController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/vote/{id}")
-    public String answerVote(Principal principal, @PathVariable Long id) {
+    public String answerVote(Principal principal, @PathVariable("id") Long id) {
         Answer answer = answerService.getAnswer(id);
         SiteUser siteUser = userService.getUser(principal.getName());
+
         answerService.vote(answer, siteUser);
         return "redirect:/question/detail/%d".formatted(answer.getQuestion().getId());
     }
