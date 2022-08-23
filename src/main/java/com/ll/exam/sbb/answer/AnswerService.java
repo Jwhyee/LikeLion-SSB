@@ -23,9 +23,8 @@ public class AnswerService {
         answerRepository.save(answer);
     }
 
-    public Answer getAnswer(long id) {
-        return answerRepository.findById(id)
-                .orElseThrow(() -> new DataNotFoundException("no %d answer not found,".formatted(id)));
+    public Answer getAnswer(Long id) {
+        return answerRepository.findById(id).orElseThrow(() -> new DataNotFoundException("answer not found"));
     }
 
     public void modify(Answer answer, String content) {

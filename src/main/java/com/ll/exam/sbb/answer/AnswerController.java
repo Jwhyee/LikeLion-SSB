@@ -2,7 +2,6 @@ package com.ll.exam.sbb.answer;
 
 import com.ll.exam.sbb.DataNotFoundException;
 import com.ll.exam.sbb.question.Question;
-import com.ll.exam.sbb.question.QuestionForm;
 import com.ll.exam.sbb.question.QuestionService;
 import com.ll.exam.sbb.user.SiteUser;
 import com.ll.exam.sbb.user.UserService;
@@ -29,12 +28,12 @@ public class AnswerController {
     private final AnswerService answerService;
     private final UserService userService;
 
-    @PostMapping("/create/{id}")
     @PreAuthorize("isAuthenticated()")
+    @PostMapping("/create/{id}")
     public String detail(Principal principal, Model model, @PathVariable long id, @Valid AnswerForm answerForm, BindingResult bindingResult) {
         Question question = this.questionService.getQuestion(id);
 
-        if ( bindingResult.hasErrors() ) {
+        if (bindingResult.hasErrors()) {
             model.addAttribute("question", question);
             return "question_detail";
         }
@@ -50,12 +49,8 @@ public class AnswerController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping("/modify/{id}")
-    public String answerModify(AnswerForm answerForm, @PathVariable("id") Integer id, Principal principal) {
-        Answer answer = this.answerService.getAnswer(id);
-
-        if (answer == null) {
-            throw new DataNotFoundException("%d번 질문은 존재하지 않습니다.");
-        }
+    public String answerModify(AnswerForm answerForm, @PathVariable("id") Long id, Principal principal) {
+        Answer answer = answerService.getAnswer(id);
 
         if (!answer.getAuthor().getUsername().equals(principal.getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
@@ -66,28 +61,35 @@ public class AnswerController {
         return "answer_form";
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/modify/{id}")
-    public String answerModify(@Valid AnswerForm answerForm, BindingResult bindingResult,
-                                 Principal principal, @PathVariable("id") Integer id) {
+    public String answerModify(@Valid AnswerForm answerForm, BindingResult bindingResult, @PathVariable("id") Long id, Principal principal) {
         if (bindingResult.hasErrors()) {
-            return "redirect:/question/detail/{id}";
+            return "answer_form";
         }
-        Answer answer = this.answerService.getAnswer(id);
+
+        Answer answer = answerService.getAnswer(id);
+
         if (!answer.getAuthor().getUsername().equals(principal.getName())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "수정권한이 없습니다.");
         }
-        System.out.println("answerForm.getContent() = " + answerForm.getContent());
-        this.answerService.modify(answer, answerForm.getContent());
-        return String.format("redirect:/question/detail/%s", id);
+
+        answerService.modify(answer, answerForm.getContent());
+
+        return "redirect:/question/detail/%d".formatted(answer.getQuestion().getId());
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/delete/{id}")
-    public String answerDelete(Principal principal, @PathVariable("id") Integer id) {
-        Answer answer = this.answerService.getAnswer(id);
+    public String answerDelete(Principal principal, @PathVariable("id") Long id) {
+        Answer answer = answerService.getAnswer(id);
+
         if (!answer.getAuthor().getUsername().equals(principal.getName())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제 권한이 없습니다.");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "삭제권한이 없습니다.");
         }
-        this.answerService.delete(answer);
-        return "redirect:/question/detail/{id}";
+
+        answerService.delete(answer);
+
+        return "redirect:/question/detail/%d".formatted(answer.getQuestion().getId());
     }
 }
