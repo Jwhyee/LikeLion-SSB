@@ -7,13 +7,6 @@ import lombok.Setter;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
-
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
-
 @Setter
 @Getter
 public class QuestionForm {

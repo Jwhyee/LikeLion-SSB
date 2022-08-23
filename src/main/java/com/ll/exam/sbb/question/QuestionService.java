@@ -1,18 +1,6 @@
 package com.ll.exam.sbb.question;
 
 import com.ll.exam.sbb.DataNotFoundException;
-import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
-import com.ll.exam.sbb.DataNotFoundException;
 import com.ll.exam.sbb.user.SiteUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -61,6 +49,6 @@ public class QuestionService {
     }
 
     public void delete(Question question) {
-        questionRepository.delete(question);
+        this.questionRepository.delete(question);
     }
 }
