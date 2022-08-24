@@ -24,12 +24,7 @@ public class QuestionService {
 
         Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts)); // 한 페이지에 10까지 가능
 
-        if (kw != null) {
-            Page<Question> q = questionRepository.findAllBySubjectContains(kw, pageable);
-            System.out.println("q = " + q.getContent().size());
-            return this.questionRepository.findAllBySubjectContainsOrContentContainsOrAuthor_UsernameContains(kw, kw, kw, pageable);
-        }
-        return this.questionRepository.findAll(pageable);
+        return this.questionRepository.findAllBySubjectContainsOrContentContainsOrAuthor_UsernameContains(kw, kw, kw, pageable);
     }
     public Question getQuestion(long id) {
         return questionRepository.findById(id)
