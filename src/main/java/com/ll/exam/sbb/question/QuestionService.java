@@ -23,8 +23,10 @@ public class QuestionService {
         sorts.add(Sort.Order.desc("createDate"));
 
         Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts)); // 한 페이지에 10까지 가능
-
-        return this.questionRepository.findAllBySubjectContainsOrContentContainsOrAuthor_UsernameContains(kw, kw, kw, pageable);
+        if (kw != null) {
+            return this.questionRepository.findDistinctBySubjectContainsOrContentContainsOrAuthor_usernameContainsOrAnswerList_contentContainsOrAnswerList_author_username(kw, kw, kw, kw, kw, pageable);
+        }
+        return this.questionRepository.findAll(pageable);
     }
     public Question getQuestion(long id) {
         return questionRepository.findById(id)
