@@ -18,15 +18,19 @@ import java.util.List;
 public class QuestionService {
     private final QuestionRepository questionRepository;
 
-    public Page<Question> getList(int page) {
+    public Page<Question> getList(int page, String kw) {
         List<Sort.Order> sorts = new ArrayList<>();
         sorts.add(Sort.Order.desc("createDate"));
 
         Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts)); // 한 페이지에 10까지 가능
 
+        if (kw != null) {
+            Page<Question> q = questionRepository.findAllBySubjectContains(kw, pageable);
+            System.out.println("q = " + q.getContent().size());
+            return this.questionRepository.findAllBySubjectContainsOrContentContainsOrAuthor_UsernameContains(kw, kw, kw, pageable);
+        }
         return this.questionRepository.findAll(pageable);
     }
-
     public Question getQuestion(long id) {
         return questionRepository.findById(id)
                 .orElseThrow(() -> new DataNotFoundException("no %d question not found,".formatted(id)));

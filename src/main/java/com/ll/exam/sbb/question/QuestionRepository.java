@@ -1,6 +1,8 @@
 package com.ll.exam.sbb.question;
 
 import com.ll.exam.sbb.base.RepositoryUtil;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -9,6 +11,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 public interface QuestionRepository extends JpaRepository<Question, Long>, RepositoryUtil {
+
+    Page<Question> findAllBySubjectContains(String kw, Pageable pageable);
+
+    Page<Question> findAllBySubjectContainsOrContentContainsOrAuthor_UsernameContains(String subject, String content, String author, Pageable pageable);
+
     Question findBySubject(String subject);
 
     Question findBySubjectAndContent(String subject, String content);
