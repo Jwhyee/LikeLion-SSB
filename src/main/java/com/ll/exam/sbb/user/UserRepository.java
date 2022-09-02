@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
-public interface UserRepository extends JpaRepository<SiteUser, Long>, RepositoryUtil {
+public interface UserRepository extends JpaRepository<SiteUser, Long>, RepositoryUtil, SiteUserRepositoryCustom {
     boolean existsByUsername(String username);
 
     Optional<SiteUser> findByUsername(String username);
